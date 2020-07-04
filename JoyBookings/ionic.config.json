@@ -1,0 +1,7 @@
+{
+  "name": "JoyBookings",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
