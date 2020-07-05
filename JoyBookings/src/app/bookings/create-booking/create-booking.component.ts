@@ -38,7 +38,6 @@ export class CreateBookingComponent implements OnInit {
               6 * 24 * 60 * 60 * 1000 -
               new Date(this.startDate).getTime())
       ).toISOString();
-      this.datesValid();
     }
   }
 
