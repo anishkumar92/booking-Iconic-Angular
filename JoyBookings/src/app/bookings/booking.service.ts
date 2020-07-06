@@ -1,17 +1,17 @@
-import { Injectable } from "@angular/core";
-import { Booking } from "./booking.model";
+import { Injectable } from '@angular/core';
+import { Booking } from './booking.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class BookingService {
   private _bookings: Booking[] = [
     {
-      id: "xyz",
-      placeId: "p1",
-      placeTitle: "Chennai",
+      id: 'xyz',
+      placeId: 'p1',
+      placeTitle: 'Chennai',
       guestNumber: 2,
-      userId: "abc",
+      userId: 'abc',
     },
   ];
 

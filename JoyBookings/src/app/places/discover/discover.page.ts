@@ -1,13 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { PlacesService } from "../places.service";
-import { Place } from "../place.model";
+import { Component, OnInit } from '@angular/core';
+import { PlacesService } from '../places.service';
+import { Place } from '../place.model';
 
-import { SegmentChangeEventDetail } from "@ionic/core";
+import { SegmentChangeEventDetail } from '@ionic/core';
 
 @Component({
-  selector: "app-discover",
-  templateUrl: "./discover.page.html",
-  styleUrls: ["./discover.page.scss"],
+  selector: 'app-discover',
+  templateUrl: './discover.page.html',
+  styleUrls: ['./discover.page.scss'],
 })
 export class DiscoverPage implements OnInit {
   loadedPlaces: Place[];

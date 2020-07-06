@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { NavController } from "@ionic/angular";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
-import { Place } from "../../place.model";
-import { PlacesService } from "../../places.service";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Place } from '../../place.model';
+import { PlacesService } from '../../places.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
-  selector: "app-edit-offer",
-  templateUrl: "./edit-offer.page.html",
-  styleUrls: ["./edit-offer.page.scss"],
+  selector: 'app-edit-offer',
+  templateUrl: './edit-offer.page.html',
+  styleUrls: ['./edit-offer.page.scss'],
 })
 export class EditOfferPage implements OnInit {
   place: Place;
@@ -23,18 +23,18 @@ export class EditOfferPage implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {
-      if (!paramMap.has("placeId")) {
-        this.navCtrl.navigateBack("/places/offers");
+      if (!paramMap.has('placeId')) {
+        this.navCtrl.navigateBack('/places/offers');
         return;
       }
-      this.place = this.placesService.getPlace(paramMap.get("placeId"));
+      this.place = this.placesService.getPlace(paramMap.get('placeId'));
       this.form = new FormGroup({
         title: new FormControl(this.place.title, {
-          updateOn: "blur",
+          updateOn: 'blur',
           validators: [Validators.required],
         }),
         description: new FormControl(this.place.description, {
-          updateOn: "blur",
+          updateOn: 'blur',
           validators: [Validators.required, Validators.maxLength(180)],
         }),
       });

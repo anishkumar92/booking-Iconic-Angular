@@ -1,17 +1,17 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-import { DiscoverPage } from "./discover.page";
+import { DiscoverPage } from './discover.page';
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     component: DiscoverPage,
   },
   {
-    path: ":placeId",
+    path: ':placeId',
     loadChildren: () =>
-      import("./place-detail/place-detail.module").then(
+      import('./place-detail/place-detail.module').then(
         (m) => m.PlaceDetailPageModule
       ),
   },

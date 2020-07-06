@@ -1,19 +1,19 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import {
   NavController,
   ModalController,
   ActionSheetController,
-} from "@ionic/angular";
-import { ActivatedRoute } from "@angular/router";
+} from '@ionic/angular';
+import { ActivatedRoute } from '@angular/router';
 
-import { Place } from "../../place.model";
-import { PlacesService } from "../../places.service";
-import { CreateBookingComponent } from "../../../bookings/create-booking/create-booking.component";
+import { Place } from '../../place.model';
+import { PlacesService } from '../../places.service';
+import { CreateBookingComponent } from '../../../bookings/create-booking/create-booking.component';
 
 @Component({
-  selector: "app-place-detail",
-  templateUrl: "./place-detail.page.html",
-  styleUrls: ["./place-detail.page.scss"],
+  selector: 'app-place-detail',
+  templateUrl: './place-detail.page.html',
+  styleUrls: ['./place-detail.page.scss'],
 })
 export class PlaceDetailPage implements OnInit {
   place: Place;
@@ -28,11 +28,11 @@ export class PlaceDetailPage implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((paramMap) => {
-      if (!paramMap.has("placeId")) {
-        this.navCtrl.navigateBack("/places/discover");
+      if (!paramMap.has('placeId')) {
+        this.navCtrl.navigateBack('/places/discover');
         return;
       }
-      this.place = this.placesService.getPlace(paramMap.get("placeId"));
+      this.place = this.placesService.getPlace(paramMap.get('placeId'));
     });
   }
 
@@ -40,23 +40,23 @@ export class PlaceDetailPage implements OnInit {
     // this.navCtrl.navigateBack("/places/discover");
     this.actionSheetCtrl
       .create({
-        header: "Choose an Action",
+        header: 'Choose an Action',
         buttons: [
           {
-            text: "Select Date",
+            text: 'Select Date',
             handler: () => {
-              this.openBookingModal("select");
+              this.openBookingModal('select');
             },
           },
           {
-            text: "Random Date",
+            text: 'Random Date',
             handler: () => {
-              this.openBookingModal("random");
+              this.openBookingModal('random');
             },
           },
           {
-            text: "Cancel",
-            role: "cancel",
+            text: 'Cancel',
+            role: 'cancel',
           },
         ],
       })
@@ -65,7 +65,7 @@ export class PlaceDetailPage implements OnInit {
       });
   }
 
-  openBookingModal(mode: "select" | "random") {
+  openBookingModal(mode: 'select' | 'random') {
     console.log(mode);
     this.modalCtrl
       .create({
@@ -78,8 +78,8 @@ export class PlaceDetailPage implements OnInit {
       })
       .then((resultData) => {
         console.log(resultData.data, resultData.role);
-        if (resultData.role === "confirm") {
-          console.log("BOOKED!");
+        if (resultData.role === 'confirm') {
+          console.log('BOOKED!');
         }
       });
   }
