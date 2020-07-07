@@ -74,6 +74,20 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  ion-toolbar {
+    --background: #ee4116;
+    --border-color: #ee4116;
+    --border-style: solid;
+    --border-width: 8px;
+    --color: #0f0e0e;
+    --min-height: 56px;
+    --opacity: 1;
+    --padding-bottom: 4px;
+    --padding-end: 4px;
+    --padding-start: 4px;
+    --padding-top: 4px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
