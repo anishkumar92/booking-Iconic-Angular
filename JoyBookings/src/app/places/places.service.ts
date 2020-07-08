@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Place } from './place.model';
+import { Place, PlaceData } from './place.model';
 import { AuthService } from '../auth/auth.service';
 import { BehaviorSubject } from 'rxjs';
-import { take, map, tap, delay } from 'rxjs/operators';
+import { take, map, tap, delay, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +48,7 @@ export class PlacesService {
     return this._places.asObservable();
   }
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private http: HttpClient) {}
 
   getPlace(id: string) {
     return this.places.pipe(
@@ -60,6 +61,38 @@ export class PlacesService {
     );
   }
 
+  fetchPlaces() {
+    return this.http
+      .get<{ [key: string]: PlaceData }>(
+        'https://ionic-angular-bookings-ce2aa.firebaseio.com/offered-places.json'
+      )
+      .pipe(
+        map((resData) => {
+          const places = [];
+          for (const key in resData) {
+            if (resData.hasOwnProperty(key)) {
+              const place: Place = {
+                id: key,
+                title: resData[key].title,
+                description: resData[key].description,
+                imageUrl: resData[key].imageUrl,
+                price: resData[key].price,
+                availableFrom: new Date(resData[key].availableFrom),
+                availableTo: new Date(resData[key].availableTo),
+                userId: resData[key].userId,
+              };
+              places.push(place);
+            }
+          }
+          return places;
+          // return [];
+        }),
+        tap((places) => {
+          this._places.next(places);
+        })
+      );
+  }
+
   addPlace(
     title: string,
     description: string,
@@ -67,6 +100,7 @@ export class PlacesService {
     dateFrom: Date,
     dateTo: Date
   ) {
+    let generatedId: string;
     const newPlace: Place = {
       id: Math.random().toString(),
       title,
@@ -77,13 +111,27 @@ export class PlacesService {
       availableTo: dateTo,
       userId: this.authService.userId,
     };
-    return this.places.pipe(
-      take(1),
-      delay(1000),
-      tap((places) => {
-        this._places.next(places.concat(newPlace));
-      })
-    );
+    return this.http
+      .post<{ name: string }>(
+        'https://ionic-angular-bookings-ce2aa.firebaseio.com/offered-places.json',
+        { ...newPlace, id: null }
+      )
+      .pipe(
+        switchMap((resData) => {
+          generatedId = resData.name;
+          return this.places;
+        }),
+        take(1),
+        tap((places) => {
+          newPlace.id = generatedId;
+          this._places.next(places.concat(newPlace));
+        })
+      );
+    //   delay(1000),
+    //   tap((places) => {
+    //     this._places.next(places.concat(newPlace));
+    //   })
+    // );
   }
 
   updatePlace(placeId: string, title: string, description: string) {
