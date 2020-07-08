@@ -12,6 +12,7 @@ import { NgForm } from '@angular/forms';
 export class AuthPage implements OnInit {
   isLoading = false;
   isLogin = true;
+
   constructor(
     private authService: AuthService,
     private loadingCtrl: LoadingController,
