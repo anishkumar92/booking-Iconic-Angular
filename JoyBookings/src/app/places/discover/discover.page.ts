@@ -33,7 +33,9 @@ export class DiscoverPage implements OnInit, OnDestroy {
   onFilterUpdate(filter: string) {
     const isShown = (place) =>
       filter === 'all' || place.userId !== this.authService.userId;
-    this.relevantPlaces = this.loadedPlaces.filter(isShown);
+    this.relevantPlaces = this.loadedPlaces
+      ? this.loadedPlaces.filter(isShown)
+      : [];
     this.filter = filter;
   }
 

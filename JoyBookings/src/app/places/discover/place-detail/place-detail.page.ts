@@ -4,8 +4,9 @@ import {
   ModalController,
   ActionSheetController,
   LoadingController,
+  AlertController,
 } from '@ionic/angular';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Place } from '../../place.model';
 import { PlacesService } from '../../places.service';
@@ -21,6 +22,7 @@ import { AuthService } from '../../../auth/auth.service';
 })
 export class PlaceDetailPage implements OnInit, OnDestroy {
   place: Place;
+  isLoading = false;
   isBookable = false;
   private placeSub: Subscription;
   constructor(
@@ -31,7 +33,9 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
     private actionSheetCtrl: ActionSheetController,
     private bookingService: BookingService,
     private loadingCtrl: LoadingController,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertCtrl: AlertController,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -40,15 +44,34 @@ export class PlaceDetailPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/places/discover');
         return;
       }
+      this.isLoading = true;
       this.placeSub = this.placesService
         .getPlace(paramMap.get('placeId'))
-        .subscribe((place) => {
-          this.place = place;
-          this.isBookable = place.userId !== this.authService.userId;
-        });
+        .subscribe(
+          (place) => {
+            this.place = place;
+            this.isBookable = place.userId !== this.authService.userId;
+            this.isLoading = false;
+          },
+          (error) => {
+            this.alertCtrl
+              .create({
+                header: 'An error ocurred!',
+                message: 'Could not load place.',
+                buttons: [
+                  {
+                    text: 'Okay',
+                    handler: () => {
+                      this.router.navigate(['/places/discover']);
+                    },
+                  },
+                ],
+              })
+              .then((alertEl) => alertEl.present());
+          }
+        );
     });
   }
-
   onBookPlace() {
     // this.navCtrl.navigateBack("/places/discover");
     this.actionSheetCtrl
